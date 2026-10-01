@@ -1,0 +1,481 @@
+{
+ "surveyedAt": "2026年3月末",
+ "source": "障害福祉サービス等情報公表システム（WAM NET）オープンデータ",
+ "sourceUrl": "https://www.wam.go.jp/content/wamnet/pcpub/top/sfkopendata/",
+ "counts": {
+  "houday": 25020,
+  "jihatsu": 16993
+ },
+ "prefs": [
+  {
+   "pref": "北海道",
+   "slug": "hokkaido",
+   "total": 2683,
+   "houday": 1457,
+   "jihatsu": 1226,
+   "sat": 1590,
+   "late18": 519,
+   "cities": 107
+  },
+  {
+   "pref": "青森県",
+   "slug": "aomori",
+   "total": 361,
+   "houday": 229,
+   "jihatsu": 132,
+   "sat": 184,
+   "late18": 77,
+   "cities": 27
+  },
+  {
+   "pref": "岩手県",
+   "slug": "iwate",
+   "total": 274,
+   "houday": 174,
+   "jihatsu": 100,
+   "sat": 143,
+   "late18": 101,
+   "cities": 23
+  },
+  {
+   "pref": "宮城県",
+   "slug": "miyagi",
+   "total": 597,
+   "houday": 397,
+   "jihatsu": 200,
+   "sat": 296,
+   "late18": 103,
+   "cities": 34
+  },
+  {
+   "pref": "秋田県",
+   "slug": "akita",
+   "total": 164,
+   "houday": 113,
+   "jihatsu": 51,
+   "sat": 90,
+   "late18": 49,
+   "cities": 15
+  },
+  {
+   "pref": "山形県",
+   "slug": "yamagata",
+   "total": 244,
+   "houday": 152,
+   "jihatsu": 92,
+   "sat": 113,
+   "late18": 47,
+   "cities": 22
+  },
+  {
+   "pref": "福島県",
+   "slug": "fukushima",
+   "total": 557,
+   "houday": 336,
+   "jihatsu": 221,
+   "sat": 259,
+   "late18": 88,
+   "cities": 32
+  },
+  {
+   "pref": "茨城県",
+   "slug": "ibaraki",
+   "total": 949,
+   "houday": 580,
+   "jihatsu": 369,
+   "sat": 457,
+   "late18": 189,
+   "cities": 43
+  },
+  {
+   "pref": "栃木県",
+   "slug": "tochigi",
+   "total": 681,
+   "houday": 425,
+   "jihatsu": 256,
+   "sat": 401,
+   "late18": 234,
+   "cities": 23
+  },
+  {
+   "pref": "群馬県",
+   "slug": "gunma",
+   "total": 598,
+   "houday": 395,
+   "jihatsu": 203,
+   "sat": 280,
+   "late18": 120,
+   "cities": 23
+  },
+  {
+   "pref": "埼玉県",
+   "slug": "saitama",
+   "total": 2129,
+   "houday": 1230,
+   "jihatsu": 899,
+   "sat": 1202,
+   "late18": 574,
+   "cities": 68
+  },
+  {
+   "pref": "千葉県",
+   "slug": "chiba",
+   "total": 2013,
+   "houday": 1111,
+   "jihatsu": 902,
+   "sat": 1082,
+   "late18": 420,
+   "cities": 55
+  },
+  {
+   "pref": "東京都",
+   "slug": "tokyo",
+   "total": 2371,
+   "houday": 1380,
+   "jihatsu": 991,
+   "sat": 1219,
+   "late18": 530,
+   "cities": 51
+  },
+  {
+   "pref": "神奈川県",
+   "slug": "kanagawa",
+   "total": 2368,
+   "houday": 1396,
+   "jihatsu": 972,
+   "sat": 1459,
+   "late18": 646,
+   "cities": 54
+  },
+  {
+   "pref": "新潟県",
+   "slug": "niigata",
+   "total": 423,
+   "houday": 281,
+   "jihatsu": 142,
+   "sat": 262,
+   "late18": 180,
+   "cities": 30
+  },
+  {
+   "pref": "富山県",
+   "slug": "toyama",
+   "total": 248,
+   "houday": 160,
+   "jihatsu": 88,
+   "sat": 153,
+   "late18": 78,
+   "cities": 14
+  },
+  {
+   "pref": "石川県",
+   "slug": "ishikawa",
+   "total": 335,
+   "houday": 188,
+   "jihatsu": 147,
+   "sat": 215,
+   "late18": 77,
+   "cities": 17
+  },
+  {
+   "pref": "福井県",
+   "slug": "fukui",
+   "total": 194,
+   "houday": 135,
+   "jihatsu": 59,
+   "sat": 103,
+   "late18": 48,
+   "cities": 14
+  },
+  {
+   "pref": "山梨県",
+   "slug": "yamanashi",
+   "total": 229,
+   "houday": 152,
+   "jihatsu": 77,
+   "sat": 145,
+   "late18": 67,
+   "cities": 17
+  },
+  {
+   "pref": "長野県",
+   "slug": "nagano",
+   "total": 460,
+   "houday": 300,
+   "jihatsu": 160,
+   "sat": 251,
+   "late18": 161,
+   "cities": 45
+  },
+  {
+   "pref": "岐阜県",
+   "slug": "gifu",
+   "total": 632,
+   "houday": 392,
+   "jihatsu": 240,
+   "sat": 417,
+   "late18": 168,
+   "cities": 37
+  },
+  {
+   "pref": "静岡県",
+   "slug": "shizuoka",
+   "total": 1087,
+   "houday": 730,
+   "jihatsu": 357,
+   "sat": 605,
+   "late18": 279,
+   "cities": 35
+  },
+  {
+   "pref": "愛知県",
+   "slug": "aichi",
+   "total": 2829,
+   "houday": 1631,
+   "jihatsu": 1198,
+   "sat": 1932,
+   "late18": 1004,
+   "cities": 65
+  },
+  {
+   "pref": "三重県",
+   "slug": "mie",
+   "total": 622,
+   "houday": 361,
+   "jihatsu": 261,
+   "sat": 412,
+   "late18": 212,
+   "cities": 25
+  },
+  {
+   "pref": "滋賀県",
+   "slug": "shiga",
+   "total": 380,
+   "houday": 260,
+   "jihatsu": 120,
+   "sat": 195,
+   "late18": 86,
+   "cities": 19
+  },
+  {
+   "pref": "京都府",
+   "slug": "kyoto",
+   "total": 557,
+   "houday": 386,
+   "jihatsu": 171,
+   "sat": 402,
+   "late18": 157,
+   "cities": 29
+  },
+  {
+   "pref": "大阪府",
+   "slug": "osaka",
+   "total": 4627,
+   "houday": 2422,
+   "jihatsu": 2205,
+   "sat": 2930,
+   "late18": 1717,
+   "cities": 71
+  },
+  {
+   "pref": "兵庫県",
+   "slug": "hyogo",
+   "total": 1977,
+   "houday": 1223,
+   "jihatsu": 754,
+   "sat": 1017,
+   "late18": 388,
+   "cities": 49
+  },
+  {
+   "pref": "奈良県",
+   "slug": "nara",
+   "total": 617,
+   "houday": 348,
+   "jihatsu": 269,
+   "sat": 314,
+   "late18": 173,
+   "cities": 24
+  },
+  {
+   "pref": "和歌山県",
+   "slug": "wakayama",
+   "total": 283,
+   "houday": 162,
+   "jihatsu": 121,
+   "sat": 182,
+   "late18": 58,
+   "cities": 21
+  },
+  {
+   "pref": "鳥取県",
+   "slug": "tottori",
+   "total": 142,
+   "houday": 92,
+   "jihatsu": 50,
+   "sat": 93,
+   "late18": 46,
+   "cities": 12
+  },
+  {
+   "pref": "島根県",
+   "slug": "shimane",
+   "total": 181,
+   "houday": 134,
+   "jihatsu": 47,
+   "sat": 93,
+   "late18": 74,
+   "cities": 11
+  },
+  {
+   "pref": "岡山県",
+   "slug": "okayama",
+   "total": 628,
+   "houday": 348,
+   "jihatsu": 280,
+   "sat": 381,
+   "late18": 151,
+   "cities": 29
+  },
+  {
+   "pref": "広島県",
+   "slug": "hiroshima",
+   "total": 1035,
+   "houday": 711,
+   "jihatsu": 324,
+   "sat": 717,
+   "late18": 370,
+   "cities": 29
+  },
+  {
+   "pref": "山口県",
+   "slug": "yamaguchi",
+   "total": 350,
+   "houday": 212,
+   "jihatsu": 138,
+   "sat": 183,
+   "late18": 64,
+   "cities": 17
+  },
+  {
+   "pref": "徳島県",
+   "slug": "tokushima",
+   "total": 342,
+   "houday": 176,
+   "jihatsu": 166,
+   "sat": 244,
+   "late18": 101,
+   "cities": 15
+  },
+  {
+   "pref": "香川県",
+   "slug": "kagawa",
+   "total": 250,
+   "houday": 133,
+   "jihatsu": 117,
+   "sat": 194,
+   "late18": 79,
+   "cities": 15
+  },
+  {
+   "pref": "愛媛県",
+   "slug": "ehime",
+   "total": 415,
+   "houday": 275,
+   "jihatsu": 140,
+   "sat": 256,
+   "late18": 124,
+   "cities": 16
+  },
+  {
+   "pref": "高知県",
+   "slug": "kochi",
+   "total": 189,
+   "houday": 122,
+   "jihatsu": 67,
+   "sat": 95,
+   "late18": 60,
+   "cities": 16
+  },
+  {
+   "pref": "福岡県",
+   "slug": "fukuoka",
+   "total": 2107,
+   "houday": 1387,
+   "jihatsu": 720,
+   "sat": 1498,
+   "late18": 692,
+   "cities": 69
+  },
+  {
+   "pref": "佐賀県",
+   "slug": "saga",
+   "total": 418,
+   "houday": 253,
+   "jihatsu": 165,
+   "sat": 295,
+   "late18": 109,
+   "cities": 19
+  },
+  {
+   "pref": "長崎県",
+   "slug": "nagasaki",
+   "total": 577,
+   "houday": 361,
+   "jihatsu": 216,
+   "sat": 404,
+   "late18": 158,
+   "cities": 20
+  },
+  {
+   "pref": "熊本県",
+   "slug": "kumamoto",
+   "total": 735,
+   "houday": 468,
+   "jihatsu": 267,
+   "sat": 390,
+   "late18": 99,
+   "cities": 43
+  },
+  {
+   "pref": "大分県",
+   "slug": "oita",
+   "total": 503,
+   "houday": 304,
+   "jihatsu": 199,
+   "sat": 251,
+   "late18": 77,
+   "cities": 15
+  },
+  {
+   "pref": "宮崎県",
+   "slug": "miyazaki",
+   "total": 400,
+   "houday": 267,
+   "jihatsu": 133,
+   "sat": 177,
+   "late18": 89,
+   "cities": 18
+  },
+  {
+   "pref": "鹿児島県",
+   "slug": "kagoshima",
+   "total": 1111,
+   "houday": 631,
+   "jihatsu": 480,
+   "sat": 737,
+   "late18": 209,
+   "cities": 36
+  },
+  {
+   "pref": "沖縄県",
+   "slug": "okinawa",
+   "total": 1141,
+   "houday": 640,
+   "jihatsu": 501,
+   "sat": 606,
+   "late18": 174,
+   "cities": 27
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #fffdfa;
+  --ink: #2b2a28;
+  --ink-soft: #5c5a56;
+  --line: #eae5dc;
+  --accent: #2f7d6d;      /* 落ち着いた緑。医療・福祉で使われる色域 */
+  --accent-soft: #eef6f4;
+  --warn: #b4551f;
+}
+
+html, body { background: var(--bg); color: var(--ink); }
+body { font-feature-settings: "palt"; line-height: 1.85; }
+
+a { color: inherit; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.link:hover { opacity: .8; }
+
+h1, h2, h3 { letter-spacing: .01em; }
