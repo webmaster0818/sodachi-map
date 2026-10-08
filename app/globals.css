@@ -1,20 +1,140 @@
 @import "tailwindcss";
 
+/*
+ * そだちマップ デザイン定義（2026-10-08 全面改訂）
+ *
+ * 施主指示「まずジョブメドレーっぽく、ただし色は変える」。
+ * job-medley.com の実測から取り出した作り方:
+ *   - 影を一切使わない（実測 box-shadow は0件）。階層は 1px の罫線だけで作る
+ *   - 角丸は 8px が基本（229件）、大きい囲みが 16px、小さいタグが 4px
+ *   - 本文は小さく密に。12px/18px/700 のリンクが最多（172件）、補足は 10px/15px
+ *   - 見出しは 20px/30px/600
+ *   - 横幅は 1024px
+ *   - 背景は温かいオフホワイト（#FDFCF9 / #FCFAF4）、罫線は #EDE8E1
+ *   - 彩度のある色はブランド色1色だけ。リンクは全部その色（実測305件）
+ *   - リンクの後ろに必ず件数を添える（「看護師(45595件)」）
+ * 色はジョブメドレーの teal をそのまま使わず、藍に差し替えている。
+ */
+
 :root {
-  --bg: #fffdfa;
-  --ink: #2b2a28;
-  --ink-soft: #5c5a56;
-  --line: #eae5dc;
-  --accent: #2f7d6d;      /* 落ち着いた緑。医療・福祉で使われる色域 */
-  --accent-soft: #eef6f4;
-  --warn: #b4551f;
+  --brand: #1D4E7A;       /* 藍。#FDFCF9 に対して 7.4:1 */
+  --brand-deep: #163C5E;
+  --brand-wash: #EDF2F7;
+  --brand-line: #C8D7E4;
+
+  --ink: #1C1917;         /* 本文 */
+  --ink-2: #44403C;       /* 副次 */
+  --ink-3: #78716C;       /* 補足。#FDFCF9 に対して 4.6:1 */
+  --bg: #FDFCF9;
+  --bg-2: #FCFAF4;
+  --surface: #FFFFFF;
+  --line: #EDE8E1;
+  --line-strong: #DCD5CA;
+  --alert: #B4451F;
+
+  /* 旧トークンの別名。下層ページがまだ参照しているため残す */
+  --accent: var(--brand);
+  --accent-soft: var(--brand-wash);
+  --ink-soft: var(--ink-3);
+  --warn: var(--alert);
+
+  --r-sm: 4px;
+  --r: 8px;
+  --r-lg: 16px;
+}
+
+/* 色の差し替え見本（施主確認用。既定は藍） */
+:root[data-brand="wakaba"] {
+  --brand: #2F6B3A; --brand-deep: #255630; --brand-wash: #EEF4EE; --brand-line: #CBDCCC;
+}
+:root[data-brand="akane"] {
+  --brand: #A63D2A; --brand-deep: #863020; --brand-wash: #F8EFEC; --brand-line: #E4C8C0;
 }
 
 html, body { background: var(--bg); color: var(--ink); }
-body { font-feature-settings: "palt"; line-height: 1.85; }
+body {
+  font-family: YakuHanJP, "Helvetica Neue", "Segoe UI", "Hiragino Kaku Gothic ProN",
+    "ヒラギノ角ゴ ProN W3", Arial, Meiryo, -apple-system, system-ui, sans-serif;
+  font-feature-settings: "palt";
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: .01em;
+}
+a { color: inherit; text-decoration: none; }
 
-a { color: inherit; }
-.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+/* ---- 骨格 ---- */
+.jm-wrap { max-width: 1024px; margin-inline: auto; padding-inline: 16px; }
+.jm-sec { padding-block: 40px; }
+.jm-sec-tight { padding-block: 28px; }
+
+/* ---- 見出し ---- */
+.jm-h2 {
+  font-size: 20px; line-height: 30px; font-weight: 600; letter-spacing: .02em;
+  padding-left: 12px; border-left: 3px solid var(--brand);
+}
+.jm-h3 { font-size: 16px; line-height: 24px; font-weight: 700; }
+.jm-lead { font-size: 12px; line-height: 20px; color: var(--ink-3); }
+
+/* ---- 囲み ---- */
+.jm-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+.jm-tile {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.jm-tile:hover { border-color: var(--brand); background: var(--brand-wash); }
+
+/* ---- リンク（これがこのサイトの主役。件数を必ず添える） ---- */
+.jm-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--brand); font-size: 12px; line-height: 18px; font-weight: 700;
+}
+.jm-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+.jm-count { color: var(--ink-3); font-size: 10px; line-height: 15px; font-weight: 400; }
+
+/* 密なリンク一覧。1行の高さを44px確保してスマホでも押せるようにする */
+.jm-linklist { display: grid; gap: 0; }
+.jm-linklist > * {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 44px; padding: 6px 2px; border-bottom: 1px solid var(--line);
+}
+.jm-linklist > *:last-child { border-bottom: 0; }
+
+/* ---- ボタン ---- */
+.jm-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 52px; padding-inline: 24px; border-radius: var(--r);
+  font-size: 16px; line-height: 24px; font-weight: 700; letter-spacing: .02em;
+  border: 1px solid transparent; transition: background-color .15s ease, border-color .15s ease;
+}
+.jm-btn-primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+.jm-btn-primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+.jm-btn-ghost { background: var(--bg); color: var(--brand); border-color: var(--line-strong); }
+.jm-btn-ghost:hover { border-color: var(--brand); }
+
+/* ---- タグ ---- */
+.jm-tag {
+  display: inline-flex; align-items: center; height: 24px; padding-inline: 8px;
+  border-radius: var(--r-sm); border: 1px solid var(--line);
+  font-size: 10px; line-height: 15px; color: var(--ink-3);
+}
+.jm-tag-on { border-color: var(--brand-line); background: var(--brand-wash); color: var(--brand); }
+
+/* ---- 数字を見せる箱 ---- */
+.jm-stat { font-size: 28px; line-height: 36px; font-weight: 700; color: var(--brand); font-feature-settings: "palt" 0; }
+.jm-stat small { font-size: 12px; font-weight: 400; color: var(--ink-3); margin-left: 3px; }
+
+/* ---- 出典の帯 ---- */
+.jm-src { font-size: 10px; line-height: 16px; color: var(--ink-3); }
+.jm-src a { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
+
+/* 旧クラスの互換（下層ページがまだ使っている） */
+.link { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
 .link:hover { opacity: .8; }
-
-h1, h2, h3 { letter-spacing: .01em; }

@@ -1,18 +1,24 @@
 import Link from "next/link";
-import { INDEX } from "@/lib/data";
+import { INDEX, loadPref, cityList } from "@/lib/data";
+import AreaPicker from "@/components/AreaPicker";
 
 /*
- * TOP。設計の軸は「近くにどこがあるか」ではなく「うちの都合で通えるか」。
+ * TOP（2026-10-08 ジョブメドレー型に作り直し）。
+ *
+ * 設計の軸は変えていない。「近くにどこがあるか」ではなく「うちの都合で通えるか」。
  * 競合(放デイマッチ・障害者ドットコム・LITALICO発達ナビ)は
  * 送迎・療育内容・空き状況では絞り込めるが、
- * 「平日の終わり時刻」「土曜に開いているか」では絞り込めない。
- * そこを最初の導線に置く。数値はすべて公表データからの機械集計。
+ * 「平日の終わり時刻」「土曜に開いているか」では絞り込めない。そこを先頭に置く。
+ *
+ * 見せ方は job-medley.com の実測に合わせた:
+ *   TOPを「件数つきリンクの索引」として作り、影を使わず罫線だけで区切る。
+ *   数値はすべて公表データからの機械集計で、推計も評価も入れない。
  */
 
 const total = INDEX.counts.houday + INDEX.counts.jihatsu;
-// 平日の終了時刻がCSVから読めた放デイ事業所だけを母数にする(欠測を分母に入れない)
 const sat = INDEX.prefs.reduce((s, p) => s + p.sat, 0);
 const late = INDEX.prefs.reduce((s, p) => s + p.late18, 0);
+const cities = INDEX.prefs.reduce((s, p) => s + p.cities, 0);
 
 const REGIONS: { name: string; slugs: string[] }[] = [
   { name: "北海道・東北", slugs: ["hokkaido", "aomori", "iwate", "miyagi", "akita", "yamagata", "fukushima"] },
@@ -23,114 +29,203 @@ const REGIONS: { name: string; slugs: string[] }[] = [
   { name: "九州・沖縄", slugs: ["fukuoka", "saga", "nagasaki", "kumamoto", "oita", "miyazaki", "kagoshima", "okinawa"] },
 ];
 
+/** 事業所数の多い市区町村。ビルド時に全県から集計する */
+function topCities(n: number) {
+  const out: { pref: string; prefSlug: string; city: string; total: number; late18: number }[] = [];
+  for (const p of INDEX.prefs) {
+    for (const c of cityList(loadPref(p.slug))) {
+      out.push({ pref: p.pref, prefSlug: p.slug, city: c.city, total: c.total, late18: c.late18 });
+    }
+  }
+  return out.sort((a, b) => b.total - a.total).slice(0, n);
+}
+
 export default function Home() {
   const byslug = new Map(INDEX.prefs.map((p) => [p.slug, p]));
+  const popular = topCities(36);
+
   return (
     <main>
-      <section className="border-b border-[var(--line)] bg-white">
-        <div className="mx-auto max-w-5xl px-4 py-12">
-          <h1 className="text-2xl font-bold leading-snug sm:text-3xl">
+      {/* ===== 検索 ===== */}
+      <section className="border-b border-[var(--line)] bg-[var(--bg-2)]">
+        <div className="jm-wrap py-8 sm:py-10">
+          <h1 className="text-[22px] font-bold leading-[32px] sm:text-[28px] sm:leading-[40px]">
             放課後等デイサービス・児童発達支援を
             <br className="hidden sm:block" />
-            <span className="text-[var(--accent)]">「うちの都合で通えるか」</span>から探す
+            <span className="text-[var(--brand)]">「うちの都合で通えるか」</span>から探す
           </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--ink-soft)]">
-            全国<strong>{total.toLocaleString()}事業所</strong>を、
-            <strong>平日の終わり時刻</strong>・<strong>土曜に開いているか</strong>・<strong>定員</strong>で比べられます。
+          <p className="mt-3 max-w-3xl text-[12px] leading-[20px] text-[var(--ink-3)]">
+            全国{total.toLocaleString()}事業所を、平日の終わり時刻・土曜に開いているか・定員で比べられます。
             数値は国の公表データ（障害福祉サービス等情報公表システム・{INDEX.surveyedAt}時点）をそのまま集計したもので、
             当サイトの推計や評価は入っていません。
           </p>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            <Link href="/late/" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-              <p className="text-xs text-[var(--ink-soft)]">共働きで迎えが間に合わない</p>
-              <p className="mt-1 font-bold">18時以降まで開いている</p>
-              <p className="mt-2 text-2xl font-bold text-[var(--accent)]">{late.toLocaleString()}<span className="ml-1 text-sm font-normal">事業所</span></p>
+          <div className="mt-5">
+            <AreaPicker prefs={INDEX.prefs.map((p) => ({ slug: p.slug, pref: p.pref, total: p.total }))} />
+          </div>
+
+          <div className="mt-4 grid gap-2 sm:grid-cols-3">
+            <Link href="/late/" className="jm-tile">
+              <p className="text-[10px] leading-[15px] text-[var(--ink-3)]">共働きで迎えが間に合わない</p>
+              <p className="mt-0.5 text-[14px] font-bold leading-[21px]">18時以降まで開いている</p>
+              <p className="jm-stat mt-1">{late.toLocaleString()}<small>事業所</small></p>
             </Link>
-            <Link href="/saturday/" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-              <p className="text-xs text-[var(--ink-soft)]">平日だけでは足りない</p>
-              <p className="mt-1 font-bold">土曜に開いている</p>
-              <p className="mt-2 text-2xl font-bold text-[var(--accent)]">{sat.toLocaleString()}<span className="ml-1 text-sm font-normal">事業所</span></p>
+            <Link href="/saturday/" className="jm-tile">
+              <p className="text-[10px] leading-[15px] text-[var(--ink-3)]">平日だけでは足りない</p>
+              <p className="mt-0.5 text-[14px] font-bold leading-[21px]">土曜に開いている</p>
+              <p className="jm-stat mt-1">{sat.toLocaleString()}<small>事業所</small></p>
             </Link>
-            <Link href="/area/" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-              <p className="text-xs text-[var(--ink-soft)]">引っ越し先でも探したい</p>
-              <p className="mt-1 font-bold">市区町村から探す</p>
-              <p className="mt-2 text-2xl font-bold text-[var(--accent)]">{INDEX.prefs.reduce((s, p) => s + p.cities, 0).toLocaleString()}<span className="ml-1 text-sm font-normal">市区町村</span></p>
+            <Link href="/area/" className="jm-tile">
+              <p className="text-[10px] leading-[15px] text-[var(--ink-3)]">引っ越し先でも探したい</p>
+              <p className="mt-0.5 text-[14px] font-bold leading-[21px]">市区町村から探す</p>
+              <p className="jm-stat mt-1">{cities.toLocaleString()}<small>市区町村</small></p>
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-12">
-        <h2 className="text-xl font-bold">公表データで分かったこと</h2>
-        <p className="mt-2 text-sm leading-relaxed text-[var(--ink-soft)]">
-          放課後等デイサービス{INDEX.counts.houday.toLocaleString()}事業所のうち、平日の利用可能な時間帯が公表されている
-          20,641事業所を集計した結果です。
-        </p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-3">
-          {[
-            { n: "97%", t: "17時以降まで開いている", d: "「17時まで」で困るケースは少数。ここでは差がつきません。" },
-            { n: "38%", t: "18時以降まで開いている", d: "18時を境に、選べる事業所は一気に3分の1近くまで減ります。" },
-            { n: "7%", t: "19時以降まで開いている", d: "フルタイム勤務で19時お迎えとなると、選択肢はごく限られます。" },
-          ].map((x) => (
-            <div key={x.t} className="rounded-xl border border-[var(--line)] bg-white p-5">
-              <p className="text-3xl font-bold text-[var(--accent)]">{x.n}</p>
-              <p className="mt-1 font-bold">{x.t}</p>
-              <p className="mt-2 text-xs leading-relaxed text-[var(--ink-soft)]">{x.d}</p>
-            </div>
-          ))}
+      {/* ===== サービスから探す ===== */}
+      <section className="jm-sec-tight border-b border-[var(--line)]">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">サービスから探す</h2>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <Link href="/service/houkago-day/" className="jm-tile">
+              <p className="text-[15px] font-bold leading-[23px]">
+                放課後等デイサービス<span className="jm-count ml-1">（{INDEX.counts.houday.toLocaleString()}事業所）</span>
+              </p>
+              <p className="jm-lead mt-1">就学後。放課後と長期休みの預け先。開所時間の実態と、見学で確認したいこと。</p>
+            </Link>
+            <Link href="/service/jidou-hattatsu/" className="jm-tile">
+              <p className="text-[15px] font-bold leading-[23px]">
+                児童発達支援<span className="jm-count ml-1">（{INDEX.counts.jihatsu.toLocaleString()}事業所）</span>
+              </p>
+              <p className="jm-lead mt-1">就学前の療育。対象年齢・利用の流れ・放課後等デイとの違い。</p>
+            </Link>
+          </div>
         </div>
-        <p className="mt-4 rounded-xl bg-[var(--accent-soft)] p-4 text-sm leading-relaxed">
-          <strong>「近くにあるか」より先に効くのは、終わりの時刻です。</strong>
-          同じ市内に20事業所あっても、18時以降まで開いているのはそのうち数件、ということが起こります。
-          当サイトでは、市区町村ごとにこの内訳を先に出しています。
-        </p>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-12">
-        <h2 className="text-xl font-bold">エリアから探す</h2>
-        <div className="mt-5 space-y-7">
-          {REGIONS.map((r) => (
-            <div key={r.name}>
-              <h3 className="border-l-4 border-[var(--accent)] pl-3 font-bold">{r.name}</h3>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {r.slugs.map((s) => {
-                  const p = byslug.get(s);
-                  if (!p) return null;
-                  return (
-                    <Link key={s} href={`/area/${s}/`} className="rounded-lg border border-[var(--line)] bg-white px-4 py-3 text-sm hover:border-[var(--accent)]">
-                      <span className="font-bold">{p.pref}</span>
-                      <span className="ml-2 text-xs text-[var(--ink-soft)]">
-                        {p.total.toLocaleString()}事業所／土曜{p.sat.toLocaleString()}／18時以降{p.late18.toLocaleString()}
-                      </span>
-                    </Link>
-                  );
-                })}
+      {/* ===== 都道府県から探す（件数つきの索引） ===== */}
+      <section className="jm-sec">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">都道府県から探す</h2>
+          <p className="jm-lead mt-2">
+            かっこ内は「事業所数／土曜に開いている数／18時以降まで開いている数」です。
+          </p>
+          <div className="mt-5 space-y-7">
+            {REGIONS.map((r) => (
+              <div key={r.name}>
+                <h3 className="jm-h3">{r.name}</h3>
+                <div className="mt-1 grid gap-x-7 sm:grid-cols-2 lg:grid-cols-3">
+                  {r.slugs.map((s) => {
+                    const p = byslug.get(s);
+                    if (!p) return null;
+                    return (
+                      <div
+                        key={s}
+                        className="flex min-h-[44px] items-center justify-between gap-3 border-b border-[var(--line)] py-1.5"
+                      >
+                        <Link href={`/area/${s}/`} className="jm-link">
+                          {p.pref}
+                        </Link>
+                        <span className="jm-count tabular-nums">
+                          {p.total.toLocaleString()}／土{p.sat.toLocaleString()}／18時{p.late18.toLocaleString()}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 pb-16">
-        <h2 className="text-xl font-bold">はじめて探す方へ</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <Link href="/service/jidou-hattatsu/" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-            <p className="font-bold">児童発達支援とは（就学前）</p>
-            <p className="mt-1 text-sm text-[var(--ink-soft)]">全国{INDEX.counts.jihatsu.toLocaleString()}事業所。対象年齢・利用の流れ・放課後等デイとの違い。</p>
-          </Link>
-          <Link href="/service/houkago-day/" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-            <p className="font-bold">放課後等デイサービスとは（就学後）</p>
-            <p className="mt-1 text-sm text-[var(--ink-soft)]">全国{INDEX.counts.houday.toLocaleString()}事業所。開所時間の実態と、見学で確認したいこと。</p>
-          </Link>
-          <Link href="/guide/" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-            <p className="font-bold">受給者証をとる手順</p>
-            <p className="mt-1 text-sm text-[var(--ink-soft)]">申請先・必要なもの・かかる期間を整理しています。</p>
-          </Link>
-          <Link href="/guide/#cost" className="rounded-xl border border-[var(--line)] bg-white p-5 hover:border-[var(--accent)]">
-            <p className="font-bold">料金（月額の上限が決まっています）</p>
-            <p className="mt-1 text-sm text-[var(--ink-soft)]">世帯の所得に応じた月額上限の仕組み。</p>
-          </Link>
+      {/* ===== 人気の市区町村 ===== */}
+      <section className="jm-sec border-t border-[var(--line)] bg-[var(--bg-2)]">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">事業所の多い市区町村から探す</h2>
+          <p className="jm-lead mt-2">かっこ内は「事業所数／そのうち18時以降まで開いている数」です。</p>
+          <div className="mt-4 grid gap-x-7 sm:grid-cols-2 lg:grid-cols-3">
+            {popular.map((c) => (
+              <div
+                key={`${c.prefSlug}-${c.city}`}
+                className="flex min-h-[44px] items-center justify-between gap-3 border-b border-[var(--line)] py-1.5"
+              >
+                <Link href={`/area/${c.prefSlug}/${encodeURIComponent(c.city)}/`} className="jm-link">
+                  {c.pref}
+                  <span className="font-normal text-[var(--ink-3)]">／</span>
+                  {c.city}
+                </Link>
+                <span className="jm-count tabular-nums">
+                  {c.total.toLocaleString()}／18時{c.late18.toLocaleString()}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4">
+            <Link href="/area/" className="jm-link">すべての市区町村（{cities.toLocaleString()}）を見る</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ===== 公表データで分かったこと ===== */}
+      <section className="jm-sec border-t border-[var(--line)]">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">公表データで分かったこと</h2>
+          <p className="jm-lead mt-2">
+            放課後等デイサービス{INDEX.counts.houday.toLocaleString()}事業所のうち、平日の利用可能な時間帯が公表されている
+            20,641事業所を集計した結果です。
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-3">
+            {[
+              { n: "97%", t: "17時以降まで開いている", d: "「17時まで」で困るケースは少数。ここでは差がつきません。" },
+              { n: "38%", t: "18時以降まで開いている", d: "18時を境に、選べる事業所は一気に3分の1近くまで減ります。" },
+              { n: "7%", t: "19時以降まで開いている", d: "フルタイム勤務で19時お迎えとなると、選択肢はごく限られます。" },
+            ].map((x) => (
+              <div key={x.t} className="jm-card p-5">
+                <p className="jm-stat">{x.n}</p>
+                <p className="mt-1 text-[14px] font-bold leading-[21px]">{x.t}</p>
+                <p className="jm-lead mt-1.5">{x.d}</p>
+              </div>
+            ))}
+          </div>
+          <div className="jm-card mt-3 bg-[var(--brand-wash)] p-4 text-[13px] leading-[22px]">
+            <strong>「近くにあるか」より先に効くのは、終わりの時刻です。</strong>
+            同じ市内に20事業所あっても、18時以降まで開いているのはそのうち数件、ということが起こります。
+            当サイトでは、市区町村ごとにこの内訳を先に出しています。
+          </div>
+        </div>
+      </section>
+
+      {/* ===== はじめて探す方へ ===== */}
+      <section className="jm-sec border-t border-[var(--line)] bg-[var(--bg-2)]">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">はじめて探す方へ</h2>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <Link href="/service/jidou-hattatsu/" className="jm-tile">
+              <p className="text-[14px] font-bold leading-[21px]">児童発達支援とは（就学前）</p>
+              <p className="jm-lead mt-1">全国{INDEX.counts.jihatsu.toLocaleString()}事業所。対象年齢・利用の流れ・放課後等デイとの違い。</p>
+            </Link>
+            <Link href="/service/houkago-day/" className="jm-tile">
+              <p className="text-[14px] font-bold leading-[21px]">放課後等デイサービスとは（就学後）</p>
+              <p className="jm-lead mt-1">全国{INDEX.counts.houday.toLocaleString()}事業所。開所時間の実態と、見学で確認したいこと。</p>
+            </Link>
+            <Link href="/guide/" className="jm-tile">
+              <p className="text-[14px] font-bold leading-[21px]">受給者証をとる手順</p>
+              <p className="jm-lead mt-1">申請先・必要なもの・かかる期間を整理しています。</p>
+            </Link>
+            <Link href="/guide/#cost" className="jm-tile">
+              <p className="text-[14px] font-bold leading-[21px]">料金（月額の上限が決まっています）</p>
+              <p className="jm-lead mt-1">世帯の所得に応じた月額上限の仕組み。</p>
+            </Link>
+          </div>
+
+          <p className="jm-src mt-6">
+            出所：
+            <a href={INDEX.sourceUrl} target="_blank" rel="noopener noreferrer">{INDEX.source}</a>
+            （{INDEX.surveyedAt}時点）。当サイトは公表されている値をそのまま集計しており、推計値・独自の評価・口コミは掲載していません。
+          </p>
         </div>
       </section>
     </main>
