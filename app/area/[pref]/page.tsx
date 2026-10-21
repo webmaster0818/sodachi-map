@@ -39,16 +39,16 @@ export default async function PrefPage({ params }: { params: Promise<{ pref: str
         <strong>平日18時以降まで開いているのは{p.late18.toLocaleString()}事業所（{latePct}%）</strong>です。
       </p>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+      <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
           <p className="text-xs text-[var(--ink-soft)]">事業所数</p>
           <p className="text-2xl font-bold">{p.total.toLocaleString()}</p>
         </div>
-        <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+        <div className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
           <p className="text-xs text-[var(--ink-soft)]">土曜に開いている</p>
           <p className="text-2xl font-bold text-[var(--accent)]">{p.sat.toLocaleString()}<span className="ml-1 text-sm font-normal">（{satPct}%）</span></p>
         </div>
-        <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+        <div className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
           <p className="text-xs text-[var(--ink-soft)]">18時以降まで開いている</p>
           <p className="text-2xl font-bold text-[var(--accent)]">{p.late18.toLocaleString()}<span className="ml-1 text-sm font-normal">（{latePct}%）</span></p>
         </div>

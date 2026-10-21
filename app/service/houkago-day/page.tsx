@@ -15,7 +15,10 @@ export default function Page() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ 放課後等デイサービスとは</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">放課後等デイサービスとは</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-houkago.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">放課後等デイサービスとは</h1>
+      </div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--ink-soft)]">
         放課後等デイサービスは、<strong>就学している障害のある子ども（原則6〜18歳）</strong>が、
         放課後や学校の長期休みに通う福祉サービスです。児童福祉法に基づく給付の対象で、受給者証があれば所得に応じた負担で利用できます。
@@ -54,8 +57,8 @@ export default function Page() {
         最も多い時間帯は10:00–16:00です。
       </p>
       <div className="mt-4 flex flex-wrap gap-3 text-sm">
-        <Link href="/late/" className="rounded-lg border border-[var(--line)] bg-white px-4 py-2">18時以降まで開いている事業所（{late.toLocaleString()}）</Link>
-        <Link href="/saturday/" className="rounded-lg border border-[var(--line)] bg-white px-4 py-2">土曜に開いている事業所（{sat.toLocaleString()}）</Link>
+        <Link href="/late/" className="sm-mini-btn">18時以降まで開いている事業所（{late.toLocaleString()}）</Link>
+        <Link href="/saturday/" className="sm-mini-btn">土曜に開いている事業所（{sat.toLocaleString()}）</Link>
       </div>
 
       <h2 className="mt-10 text-xl font-bold">児童発達支援との違い</h2>

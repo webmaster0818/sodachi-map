@@ -13,7 +13,10 @@ export default function Page() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ 児童発達支援とは</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">児童発達支援とは</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-jihatsu.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">児童発達支援とは</h1>
+      </div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--ink-soft)]">
         児童発達支援は、<strong>就学前の障害のある子ども</strong>が通い、日常生活の動作や集団生活への適応について支援を受けるサービスです。
         児童福祉法に基づく給付の対象で、全国に<strong>{INDEX.counts.jihatsu.toLocaleString()}事業所</strong>あります（{INDEX.surveyedAt}時点）。

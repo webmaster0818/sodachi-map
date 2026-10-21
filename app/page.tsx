@@ -46,60 +46,95 @@ export default function Home() {
 
   return (
     <main>
-      {/* ===== 検索 ===== */}
-      <section className="border-b border-[var(--line)] bg-[var(--bg-2)]">
-        <div className="jm-wrap py-8 sm:py-10">
-          <h1 className="text-[22px] font-bold leading-[32px] sm:text-[28px] sm:leading-[40px]">
-            放課後等デイサービス・児童発達支援を
-            <br className="hidden sm:block" />
-            <span className="text-[var(--brand)]">「うちの都合で通えるか」</span>から探す
-          </h1>
-          <p className="mt-3 max-w-3xl text-[12px] leading-[20px] text-[var(--ink-3)]">
-            全国{total.toLocaleString()}事業所を、平日の終わり時刻・土曜に開いているか・定員で比べられます。
-            数値は国の公表データ（障害福祉サービス等情報公表システム・{INDEX.surveyedAt}時点）をそのまま集計したもので、
-            当サイトの推計や評価は入っていません。
-          </p>
-
-          <div className="mt-5">
-            <AreaPicker prefs={INDEX.prefs.map((p) => ({ slug: p.slug, pref: p.pref, total: p.total }))} />
+      {/* ===== ヒーロー(スマホはファーストビューいっぱい・2026-10-21) ===== */}
+      <section className="sm-hero">
+        <picture className="sm-hero-media">
+          <source media="(min-width: 768px)" srcSet="/img/hero-pc.webp" type="image/webp" />
+          <source media="(min-width: 768px)" srcSet="/img/hero-pc.jpg" />
+          <source srcSet="/img/hero-sp.webp" type="image/webp" />
+          <img src="/img/hero-sp.jpg" alt="夕方の住宅街を、手をつないで事業所へ向かう親子の後ろ姿(当サイトで作成したイメージ画像)" fetchPriority="high" />
+        </picture>
+        <div className="jm-wrap sm-hero-inner">
+          <div className="md:max-w-[520px]">
+            <p className="text-[12px] font-bold tracking-[.12em] text-white/85">放課後等デイサービス・児童発達支援</p>
+            <h1 className="mt-2">
+              「うちの都合で
+              <br className="md:hidden" />
+              通えるか」から、
+              <br />
+              預け先を探す。
+            </h1>
+            <p className="sm-hero-lead mt-3">
+              全国{total.toLocaleString()}事業所を、平日の終わり時刻・土曜の開所・定員で比べられます。数値は国の公表データ（{INDEX.surveyedAt}時点）をそのまま集計しています。
+            </p>
           </div>
+          <div className="md:max-w-[520px] md:w-full">
+            <div className="sm-hero-stats">
+              <div className="sm-hero-stat"><b>{late.toLocaleString()}</b><span>18時以降まで開所</span></div>
+              <div className="sm-hero-stat"><b>{sat.toLocaleString()}</b><span>土曜に開所</span></div>
+              <div className="sm-hero-stat"><b>{cities.toLocaleString()}</b><span>市区町村</span></div>
+            </div>
+            <div className="mt-3 text-[var(--ink)]">
+              <AreaPicker prefs={INDEX.prefs.map((p) => ({ slug: p.slug, pref: p.pref, total: p.total }))} />
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-3">
-            <Link href="/late/" className="jm-tile">
-              <p className="text-[10px] leading-[15px] text-[var(--ink-3)]">共働きで迎えが間に合わない</p>
-              <p className="mt-0.5 text-[14px] font-bold leading-[21px]">18時以降まで開いている</p>
-              <p className="jm-stat mt-1">{late.toLocaleString()}<small>事業所</small></p>
+      {/* ===== 条件から探す ===== */}
+      <section className="jm-sec border-b border-[var(--line)] bg-[var(--bg-2)]">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">通える条件から探す</h2>
+          <p className="jm-lead mt-2">競合サイトはエリアから探す作りが中心です。当サイトは、共働きの家庭が実際に困る「終わりの時刻」と「土曜」から探せます。</p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <Link href="/late/" className="sm-choice sm-choice-lg">
+              <span className="sm-icon sm-icon-lg"><img src="/img/ic-late.webp" alt="" width={112} height={112} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">18時以降まで開いている</span>
+                <span className="sm-choice-sub">共働きで迎えが間に合わない方に。全国{late.toLocaleString()}事業所</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-            <Link href="/saturday/" className="jm-tile">
-              <p className="text-[10px] leading-[15px] text-[var(--ink-3)]">平日だけでは足りない</p>
-              <p className="mt-0.5 text-[14px] font-bold leading-[21px]">土曜に開いている</p>
-              <p className="jm-stat mt-1">{sat.toLocaleString()}<small>事業所</small></p>
+            <Link href="/saturday/" className="sm-choice sm-choice-lg">
+              <span className="sm-icon sm-icon-lg"><img src="/img/ic-saturday.webp" alt="" width={112} height={112} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">土曜に開いている</span>
+                <span className="sm-choice-sub">平日だけでは足りない方に。全国{sat.toLocaleString()}事業所</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-            <Link href="/area/" className="jm-tile">
-              <p className="text-[10px] leading-[15px] text-[var(--ink-3)]">引っ越し先でも探したい</p>
-              <p className="mt-0.5 text-[14px] font-bold leading-[21px]">市区町村から探す</p>
-              <p className="jm-stat mt-1">{cities.toLocaleString()}<small>市区町村</small></p>
+            <Link href="/area/" className="sm-choice sm-choice-lg">
+              <span className="sm-icon sm-icon-lg"><img src="/img/ic-area.webp" alt="" width={112} height={112} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">市区町村から探す</span>
+                <span className="sm-choice-sub">引っ越し先でも探せます。{cities.toLocaleString()}市区町村</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* ===== サービスから探す ===== */}
-      <section className="jm-sec-tight border-b border-[var(--line)]">
+      <section className="jm-sec border-b border-[var(--line)]">
         <div className="jm-wrap">
           <h2 className="jm-h2">サービスから探す</h2>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            <Link href="/service/houkago-day/" className="jm-tile">
-              <p className="text-[15px] font-bold leading-[23px]">
-                放課後等デイサービス<span className="jm-count ml-1">（{INDEX.counts.houday.toLocaleString()}事業所）</span>
-              </p>
-              <p className="jm-lead mt-1">就学後。放課後と長期休みの預け先。開所時間の実態と、見学で確認したいこと。</p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <Link href="/service/houkago-day/" className="sm-choice sm-choice-lg">
+              <span className="sm-icon sm-icon-lg"><img src="/img/ic-houkago.webp" alt="" width={112} height={112} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">放課後等デイサービス<span className="jm-count ml-1">（{INDEX.counts.houday.toLocaleString()}事業所）</span></span>
+                <span className="sm-choice-sub">就学後。放課後と長期休みの預け先。開所時間の実態と、見学で確認したいこと。</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-            <Link href="/service/jidou-hattatsu/" className="jm-tile">
-              <p className="text-[15px] font-bold leading-[23px]">
-                児童発達支援<span className="jm-count ml-1">（{INDEX.counts.jihatsu.toLocaleString()}事業所）</span>
-              </p>
-              <p className="jm-lead mt-1">就学前の療育。対象年齢・利用の流れ・放課後等デイとの違い。</p>
+            <Link href="/service/jidou-hattatsu/" className="sm-choice sm-choice-lg">
+              <span className="sm-icon sm-icon-lg"><img src="/img/ic-jihatsu.webp" alt="" width={112} height={112} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">児童発達支援<span className="jm-count ml-1">（{INDEX.counts.jihatsu.toLocaleString()}事業所）</span></span>
+                <span className="sm-choice-sub">就学前の療育。対象年齢・利用の流れ・放課後等デイとの違い。</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -172,7 +207,10 @@ export default function Home() {
       {/* ===== 公表データで分かったこと ===== */}
       <section className="jm-sec border-t border-[var(--line)]">
         <div className="jm-wrap">
-          <h2 className="jm-h2">公表データで分かったこと</h2>
+          <div className="sm-sec-head">
+            <span className="sm-icon"><img src="/img/ic-data.webp" alt="" width={80} height={80} /></span>
+            <h2 className="jm-h2">公表データで分かったこと</h2>
+          </div>
           <p className="jm-lead mt-2">
             放課後等デイサービス{INDEX.counts.houday.toLocaleString()}事業所のうち、平日の利用可能な時間帯が公表されている
             20,641事業所を集計した結果です。
@@ -202,22 +240,38 @@ export default function Home() {
       <section className="jm-sec border-t border-[var(--line)] bg-[var(--bg-2)]">
         <div className="jm-wrap">
           <h2 className="jm-h2">はじめて探す方へ</h2>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            <Link href="/service/jidou-hattatsu/" className="jm-tile">
-              <p className="text-[14px] font-bold leading-[21px]">児童発達支援とは（就学前）</p>
-              <p className="jm-lead mt-1">全国{INDEX.counts.jihatsu.toLocaleString()}事業所。対象年齢・利用の流れ・放課後等デイとの違い。</p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <Link href="/service/jidou-hattatsu/" className="sm-choice">
+              <span className="sm-icon"><img src="/img/ic-jihatsu.webp" alt="" width={80} height={80} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">児童発達支援とは（就学前）</span>
+                <span className="sm-choice-sub">全国{INDEX.counts.jihatsu.toLocaleString()}事業所。対象年齢・利用の流れ・放課後等デイとの違い。</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-            <Link href="/service/houkago-day/" className="jm-tile">
-              <p className="text-[14px] font-bold leading-[21px]">放課後等デイサービスとは（就学後）</p>
-              <p className="jm-lead mt-1">全国{INDEX.counts.houday.toLocaleString()}事業所。開所時間の実態と、見学で確認したいこと。</p>
+            <Link href="/service/houkago-day/" className="sm-choice">
+              <span className="sm-icon"><img src="/img/ic-houkago.webp" alt="" width={80} height={80} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">放課後等デイサービスとは（就学後）</span>
+                <span className="sm-choice-sub">全国{INDEX.counts.houday.toLocaleString()}事業所。開所時間の実態と、見学で確認したいこと。</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-            <Link href="/guide/" className="jm-tile">
-              <p className="text-[14px] font-bold leading-[21px]">受給者証をとる手順</p>
-              <p className="jm-lead mt-1">申請先・必要なもの・かかる期間を整理しています。</p>
+            <Link href="/guide/" className="sm-choice">
+              <span className="sm-icon"><img src="/img/ic-guide.webp" alt="" width={80} height={80} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">受給者証をとる手順</span>
+                <span className="sm-choice-sub">申請先・必要なもの・かかる期間を整理しています。</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-            <Link href="/guide/#cost" className="jm-tile">
-              <p className="text-[14px] font-bold leading-[21px]">料金（月額の上限が決まっています）</p>
-              <p className="jm-lead mt-1">世帯の所得に応じた月額上限の仕組み。</p>
+            <Link href="/guide/#cost" className="sm-choice">
+              <span className="sm-icon"><img src="/img/ic-cost.webp" alt="" width={80} height={80} /></span>
+              <span className="sm-choice-body">
+                <span className="sm-choice-title">料金（月額の上限が決まっています）</span>
+                <span className="sm-choice-sub">世帯の所得に応じた月額上限の仕組み。</span>
+              </span>
+              <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
           </div>
 

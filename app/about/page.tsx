@@ -12,7 +12,10 @@ export default function Page() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ サイトについて</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">サイトについて</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-data.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">サイトについて</h1>
+      </div>
 
       <h2 className="mt-8 text-xl font-bold">何をするサイトか</h2>
       <p className="mt-2 text-sm leading-relaxed text-[var(--ink-soft)]">

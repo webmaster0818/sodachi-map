@@ -82,16 +82,16 @@ export default async function CityPage({ params }: { params: Promise<{ pref: str
         平日・土曜の利用可能な時間帯、定休日、定員を公表データから一覧にしました。
       </p>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+      <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
           <p className="text-xs text-[var(--ink-soft)]">事業所数</p>
           <p className="text-2xl font-bold">{c.total}</p>
         </div>
-        <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+        <div className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
           <p className="text-xs text-[var(--ink-soft)]">土曜に開いている</p>
           <p className="text-2xl font-bold text-[var(--accent)]">{c.sat}</p>
         </div>
-        <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+        <div className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
           <p className="text-xs text-[var(--ink-soft)]">18時以降まで開いている</p>
           <p className="text-2xl font-bold text-[var(--accent)]">{c.late18}</p>
         </div>
@@ -120,7 +120,7 @@ export default async function CityPage({ params }: { params: Promise<{ pref: str
       <h2 className="mt-10 text-xl font-bold">よくある質問</h2>
       <div className="mt-3 space-y-3">
         {faqs.map((f, i) => (
-          <details key={i} className="rounded-lg border border-[var(--line)] bg-white">
+          <details key={i} className="rounded-lg border border-[var(--line-strong)] bg-white">
             <summary className="cursor-pointer px-4 py-3 text-sm font-medium">{f.q}</summary>
             <p className="px-4 pb-4 text-sm leading-relaxed text-[var(--ink-soft)]">{f.a}</p>
           </details>
@@ -135,7 +135,7 @@ export default async function CityPage({ params }: { params: Promise<{ pref: str
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
             {others.map((x) => (
-              <Link key={x.city} href={`/area/${p.slug}/${encodeURIComponent(x.city)}/`} className="rounded-lg border border-[var(--line)] bg-white px-3 py-1.5 hover:border-[var(--accent)]">
+              <Link key={x.city} href={`/area/${p.slug}/${encodeURIComponent(x.city)}/`} className="sm-mini-btn">
                 {x.city}<span className="ml-1 text-xs text-[var(--ink-soft)]">{x.total}</span>
               </Link>
             ))}

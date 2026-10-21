@@ -17,7 +17,10 @@ export default function SaturdayPage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ 土曜に通える</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">土曜に通える事業所を探す</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-saturday.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">土曜に通える事業所を探す</h1>
+      </div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--ink-soft)]">
         全国{total.toLocaleString()}事業所のうち、<strong>土曜の利用可能な時間帯を公表しているのは{sat.toLocaleString()}事業所（{Math.round((sat / total) * 100)}%）</strong>です。
         平日だけでは足りない、きょうだいの用事がある、親の勤務が土曜にもある——という場合に、まずここから絞り込めます。

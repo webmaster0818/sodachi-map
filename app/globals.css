@@ -28,8 +28,8 @@
   --bg: #FDFCF9;
   --bg-2: #FCFAF4;
   --surface: #FFFFFF;
-  --line: #EDE8E1;
-  --line-strong: #DCD5CA;
+  --line: #E2DACE;        /* 2026-10-21 背景 #FDFCF9 との差を広げる(旧 #EDE8E1 は白カードとの境目が見えにくかった) */
+  --line-strong: #CFC5B6;
   --alert: #B4451F;
 
   /* 旧トークンの別名。下層ページがまだ参照しているため残す */
@@ -138,3 +138,87 @@ a { color: inherit; text-decoration: none; }
 /* 旧クラスの互換（下層ページがまだ使っている） */
 .link { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
 .link:hover { opacity: .8; }
+
+
+/* =====================================================================
+ * 2026-10-21 施主指示による改訂
+ *  - 絵文字を使わない。アイコンは nano banana pro で作った画像を大きく使う(.sm-icon)
+ *  - 選択ボタンは色を変えずにデザインを1つに統一する(.sm-choice / .jm-btn)
+ *  - 背景とのコントラストを見て枠を使う(白い面には必ず --line-strong 以上の枠)
+ *  - スマホのヒーローはファーストビューいっぱい(.sm-hero)
+ * ===================================================================== */
+
+:root { --hdr: 132px; }          /* スマホ: PR帯+ヘッダー+ナビ2段目 */
+@media (min-width: 768px) { :root { --hdr: 86px; } }
+
+.jm-card, .jm-tile { border-color: var(--line-strong); }
+
+/* ---- ヒーロー ---- */
+.sm-hero { position: relative; isolation: isolate; color: #fff; background: #1b2633; }
+.sm-hero-media { position: absolute; inset: 0; z-index: -2; }
+.sm-hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; }
+.sm-hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(14,24,36,.62) 0%, rgba(14,24,36,.30) 38%, rgba(14,24,36,.55) 70%, rgba(14,24,36,.86) 100%);
+}
+.sm-hero-inner { min-height: calc(100svh - var(--hdr)); display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding-block: 28px 20px; }
+@media (min-width: 768px) {
+  .sm-hero::before { background: linear-gradient(90deg, rgba(14,24,36,.20) 0%, rgba(14,24,36,.35) 45%, rgba(14,24,36,.80) 100%); }
+  .sm-hero-media img { object-position: 30% 60%; }
+  .sm-hero-inner { min-height: min(720px, calc(100svh - var(--hdr))); justify-content: center; align-items: flex-end; padding-block: 56px; }
+}
+.sm-hero h1 { font-size: 28px; line-height: 40px; font-weight: 700; letter-spacing: .02em; text-shadow: 0 1px 12px rgba(0,0,0,.35); }
+@media (min-width: 768px) { .sm-hero h1 { font-size: 38px; line-height: 54px; } }
+.sm-hero .sm-hero-lead { font-size: 13px; line-height: 22px; color: rgba(255,255,255,.9); }
+.sm-hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sm-hero-stat { border: 1px solid rgba(255,255,255,.45); border-radius: var(--r); padding: 10px 10px 8px; background: rgba(255,255,255,.08); backdrop-filter: blur(2px); }
+.sm-hero-stat b { display: block; font-size: 20px; line-height: 26px; font-feature-settings: "palt" 0; }
+.sm-hero-stat span { display: block; font-size: 10px; line-height: 15px; color: rgba(255,255,255,.85); }
+
+/* ---- 統一した選択ボタン ---- */
+.sm-choice {
+  display: flex; align-items: center; gap: 14px;
+  min-height: 64px; padding: 12px 14px;
+  background: var(--surface); color: var(--ink);
+  border: 1.5px solid var(--brand-line); border-radius: 12px;
+  transition: border-color .15s ease, background-color .15s ease, transform .15s ease;
+}
+.sm-choice:hover { border-color: var(--brand); background: var(--brand-wash); }
+.sm-choice:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.sm-choice-body { flex: 1; min-width: 0; }
+.sm-choice-title { display: block; font-size: 15px; line-height: 22px; font-weight: 700; color: var(--brand); }
+.sm-choice-sub { display: block; font-size: 11px; line-height: 17px; color: var(--ink-3); margin-top: 2px; }
+.sm-choice-arrow { flex: none; width: 28px; height: 28px; border-radius: 999px; border: 1.5px solid var(--brand-line); position: relative; }
+.sm-choice-arrow::after { content: ""; position: absolute; left: 9px; top: 9px; width: 8px; height: 8px; border-top: 2px solid var(--brand); border-right: 2px solid var(--brand); transform: rotate(45deg); }
+.sm-choice:hover .sm-choice-arrow { background: var(--brand); border-color: var(--brand); }
+.sm-choice:hover .sm-choice-arrow::after { border-color: #fff; }
+.sm-choice-lg { min-height: 120px; padding: 16px; align-items: center; }
+
+/* ---- アイコン(画像) ---- */
+.sm-icon { flex: none; width: 72px; height: 72px; border-radius: 16px; background: #FDFCF9; border: 1px solid var(--line); overflow: hidden; }
+.sm-icon img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
+.sm-icon-lg { width: 96px; height: 96px; border-radius: 20px; }
+@media (min-width: 768px) { .sm-icon { width: 80px; height: 80px; } .sm-icon-lg { width: 112px; height: 112px; } }
+
+/* ---- 事業所カード ---- */
+.sm-fac { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 14px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 12px; }
+@media (min-width: 640px) { .sm-fac { grid-template-columns: 168px 1fr; gap: 18px; padding: 16px; } }
+.sm-fac-photo { position: relative; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; background: var(--bg-2); border: 1px solid var(--line); }
+.sm-fac-photo img { width: 100%; height: 100%; object-fit: cover; }
+.sm-fac-photo figcaption { position: absolute; right: 4px; bottom: 4px; font-size: 9px; line-height: 13px; padding: 1px 5px; border-radius: 4px; background: rgba(255,255,255,.88); color: var(--ink-3); }
+.sm-fac-name { font-size: 15px; line-height: 22px; font-weight: 700; }
+.sm-fac-meta { font-size: 11px; line-height: 17px; color: var(--ink-3); }
+.sm-fac-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; margin-top: 10px; }
+@media (min-width: 640px) { .sm-fac-grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+.sm-fac-cell { border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; background: var(--bg); }
+.sm-fac-cell dt { font-size: 10px; line-height: 14px; color: var(--ink-3); }
+.sm-fac-cell dd { font-size: 13px; line-height: 19px; font-weight: 700; word-break: break-word; }
+.sm-fac-cell.is-on { border-color: var(--brand-line); background: var(--brand-wash); }
+.sm-fac-cell.is-on dd { color: var(--brand); }
+.sm-fac-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.sm-mini-btn { display: inline-flex; align-items: center; min-height: 40px; padding-inline: 14px; border-radius: 8px; border: 1.5px solid var(--brand-line); background: var(--surface); color: var(--brand); font-size: 12px; font-weight: 700; }
+.sm-mini-btn:hover { border-color: var(--brand); background: var(--brand-wash); }
+
+/* ---- セクション見出し(アイコンつき) ---- */
+.sm-sec-head { display: flex; align-items: center; gap: 14px; }
+.sm-sec-head h2 { font-size: 22px; line-height: 32px; font-weight: 700; }

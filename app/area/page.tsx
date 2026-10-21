@@ -16,7 +16,10 @@ export default function AreaIndex() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ エリアから探す</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">エリアから探す</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-area.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">エリアから探す</h1>
+      </div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--ink-soft)]">
         全国<strong>{total.toLocaleString()}事業所</strong>（放課後等デイサービス・児童発達支援）を都道府県別に整理しました。
         「<strong>土曜</strong>」「<strong>18時以降</strong>」の列は、公表データの利用可能な時間帯から機械的に数えた実数です。

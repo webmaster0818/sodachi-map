@@ -17,7 +17,10 @@ export default function LatePage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ 18時以降まで</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">18時以降まで開いている事業所を探す</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-late.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">18時以降まで開いている事業所を探す</h1>
+      </div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--ink-soft)]">
         共働き家庭でいちばん最初に効いてくる条件が、<strong>「何時まで預かってもらえるか」</strong>です。
         全国で<strong>{late.toLocaleString()}事業所</strong>が、平日18時以降まで開いていると公表しています。
@@ -29,7 +32,7 @@ export default function LatePage() {
           { n: "38%", t: "18時以降まで", d: "18時を境に、選べる事業所が一気に減ります。" },
           { n: "7%", t: "19時以降まで", d: "19時お迎えが必要なら、選択肢はごく限られます。" },
         ].map((x) => (
-          <div key={x.t} className="rounded-xl border border-[var(--line)] bg-white p-5">
+          <div key={x.t} className="rounded-xl border border-[var(--line-strong)] bg-white p-5">
             <p className="text-3xl font-bold text-[var(--accent)]">{x.n}</p>
             <p className="mt-1 font-bold">{x.t}</p>
             <p className="mt-2 text-xs leading-relaxed text-[var(--ink-soft)]">{x.d}</p>

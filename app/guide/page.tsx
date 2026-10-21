@@ -44,7 +44,10 @@ export default function GuidePage() {
     <main className="mx-auto max-w-3xl px-4 py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <p className="text-xs text-[var(--ink-soft)]"><Link href="/" className="link">ホーム</Link> ／ はじめての方へ</p>
-      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">はじめての方へ</h1>
+      <div className="mt-3 flex items-center gap-4">
+        <span className="sm-icon sm-icon-lg"><img src="/img/ic-guide.webp" alt="" width={112} height={112} /></span>
+        <h1 className="text-2xl font-bold sm:text-3xl">はじめての方へ</h1>
+      </div>
       <p className="mt-3 text-sm leading-relaxed text-[var(--ink-soft)]">
         放課後等デイサービス・児童発達支援は、どちらも<strong>受給者証（通所受給者証）</strong>があれば使えます。
         ここでは申請の流れ、かかるお金、見学で確認したいことを、公的な情報に基づいて整理しました。
@@ -53,7 +56,7 @@ export default function GuidePage() {
       <h2 className="mt-10 text-xl font-bold">受給者証をとるまでの流れ</h2>
       <ol className="mt-4 space-y-3">
         {steps.map((s) => (
-          <li key={s.t} className="rounded-xl border border-[var(--line)] bg-white p-4">
+          <li key={s.t} className="rounded-xl border border-[var(--line-strong)] bg-white p-4">
             <p className="font-bold">{s.t}</p>
             <p className="mt-1 text-sm leading-relaxed text-[var(--ink-soft)]">{s.d}</p>
           </li>
@@ -124,7 +127,7 @@ export default function GuidePage() {
       <h2 className="mt-10 text-xl font-bold">よくある質問</h2>
       <div className="mt-3 space-y-3">
         {faqs.map((f, i) => (
-          <details key={i} className="rounded-lg border border-[var(--line)] bg-white">
+          <details key={i} className="rounded-lg border border-[var(--line-strong)] bg-white">
             <summary className="cursor-pointer px-4 py-3 text-sm font-medium">{f.q}</summary>
             <p className="px-4 pb-4 text-sm leading-relaxed text-[var(--ink-soft)]">{f.a}</p>
           </details>
