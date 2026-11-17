@@ -4,10 +4,10 @@ import "./globals.css";
 import { INDEX } from "@/lib/data";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sodachi-map.com"),
+  metadataBase: new URL("https://houday-sagashi.com"),
   title: {
-    default: "そだちマップ｜放課後等デイサービス・児童発達支援を「通える条件」で探す",
-    template: "%s｜そだちマップ",
+    default: "放デイさがし｜放課後等デイサービス・児童発達支援を「通える条件」で探す",
+    template: "%s｜放デイさがし",
   },
   description:
     "全国42,013事業所の放課後等デイサービス・児童発達支援を、平日の終わり時刻・土曜の開所・定員といった公表データで比べられます。出所は障害福祉サービス等情報公表システム（2026年3月末時点）。",
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="jm-wrap flex min-h-[60px] items-center justify-between gap-4">
             <Link href="/" className="shrink-0 leading-tight">
               <span className="block text-[17px] font-bold tracking-tight">
-                そだち<span className="text-[var(--brand)]">マップ</span>
+                放デイ<span className="text-[var(--brand)]">さがし</span>
               </span>
               <span className="block text-[10px] leading-[15px] text-[var(--ink-3)]">
                 放課後等デイ・児童発達支援 {total.toLocaleString()}事業所
@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <footer className="mt-10 border-t border-[var(--line)] bg-[var(--surface)]">
           <div className="jm-wrap py-10">
-            <p className="text-[15px] font-bold">そだちマップ</p>
+            <p className="text-[15px] font-bold">放デイさがし</p>
             <p className="mt-2 max-w-3xl text-[12px] leading-[20px] text-[var(--ink-3)]">
               放課後等デイサービス・児童発達支援を、「通える条件」から探せるサイトです。
               掲載している事業所情報は
@@ -98,7 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </div>
 
-            <p className="mt-8 text-[10px] leading-[15px] text-[var(--ink-3)]">© そだちマップ</p>
+            <p className="mt-8 text-[10px] leading-[15px] text-[var(--ink-3)]">© 放デイさがし</p>
           </div>
         </footer>
       </body>

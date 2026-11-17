@@ -1,4 +1,4 @@
-# そだちマップ（sodachi-map）
+# 放デイさがし（houday-sagashi.com・repo: sodachi-map）
 
 放課後等デイサービス・児童発達支援を「うちの都合で通えるか」から探せるサイト。
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
-  description: "そだちマップのプライバシーポリシーです。",
+  description: "放デイさがしのプライバシーポリシーです。",
   alternates: { canonical: "/privacy/" },
 };
 

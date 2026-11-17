@@ -4,7 +4,7 @@ import { INDEX } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "利用規約",
-  description: "そだちマップの利用規約です。",
+  description: "放デイさがしの利用規約です。",
   alternates: { canonical: "/terms/" },
 };
 

@@ -3,7 +3,7 @@ import { INDEX, loadPref, cityList } from "@/lib/data";
 
 export const dynamic = "force-static";
 
-const BASE = "https://sodachi-map.com";
+const BASE = "https://houday-sagashi.com";
 const LASTMOD = "2026-10-01";
 
 export default function sitemap(): MetadataRoute.Sitemap {
