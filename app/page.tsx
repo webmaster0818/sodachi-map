@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { INDEX, loadPref, cityList } from "@/lib/data";
 import AreaPicker from "@/components/AreaPicker";
+import AreaMap from "@/components/AreaMap";
 
 /*
  * TOP（2026-10-08 ジョブメドレー型に作り直し）。
@@ -20,14 +21,6 @@ const sat = INDEX.prefs.reduce((s, p) => s + p.sat, 0);
 const late = INDEX.prefs.reduce((s, p) => s + p.late18, 0);
 const cities = INDEX.prefs.reduce((s, p) => s + p.cities, 0);
 
-const REGIONS: { name: string; slugs: string[] }[] = [
-  { name: "北海道・東北", slugs: ["hokkaido", "aomori", "iwate", "miyagi", "akita", "yamagata", "fukushima"] },
-  { name: "関東", slugs: ["ibaraki", "tochigi", "gunma", "saitama", "chiba", "tokyo", "kanagawa"] },
-  { name: "中部・北陸", slugs: ["niigata", "toyama", "ishikawa", "fukui", "yamanashi", "nagano", "gifu", "shizuoka", "aichi"] },
-  { name: "近畿", slugs: ["mie", "shiga", "kyoto", "osaka", "hyogo", "nara", "wakayama"] },
-  { name: "中国・四国", slugs: ["tottori", "shimane", "okayama", "hiroshima", "yamaguchi", "tokushima", "kagawa", "ehime", "kochi"] },
-  { name: "九州・沖縄", slugs: ["fukuoka", "saga", "nagasaki", "kumamoto", "oita", "miyazaki", "kagoshima", "okinawa"] },
-];
 
 /** 事業所数の多い市区町村。ビルド時に全県から集計する */
 function topCities(n: number) {
@@ -41,7 +34,6 @@ function topCities(n: number) {
 }
 
 export default function Home() {
-  const byslug = new Map(INDEX.prefs.map((p) => [p.slug, p]));
   const popular = topCities(36);
 
   return (
@@ -77,6 +69,19 @@ export default function Home() {
             <div className="mt-3 text-[var(--ink)]">
               <AreaPicker prefs={INDEX.prefs.map((p) => ({ slug: p.slug, pref: p.pref, total: p.total }))} />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== エリアマップから探す（2026-11-18 施主指示：地図で地域を絞り込む） ===== */}
+      <section id="map" className="jm-sec border-b border-[var(--line)]">
+        <div className="jm-wrap">
+          <h2 className="jm-h2">エリアマップから探す</h2>
+          <p className="jm-lead mt-2">
+            地図の都道府県か地方名を押すと、その地方の都道府県に絞り込みます。都道府県名を押すと、市区町村ごとの事業所数と「18時以降／土曜」の内訳が出ます。
+          </p>
+          <div className="mt-4">
+            <AreaMap prefs={INDEX.prefs.map((p) => ({ slug: p.slug, pref: p.pref, total: p.total, sat: p.sat, late18: p.late18 }))} />
           </div>
         </div>
       </section>
@@ -136,42 +141,6 @@ export default function Home() {
               </span>
               <span className="sm-choice-arrow" aria-hidden="true" />
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== 都道府県から探す（件数つきの索引） ===== */}
-      <section className="jm-sec">
-        <div className="jm-wrap">
-          <h2 className="jm-h2">都道府県から探す</h2>
-          <p className="jm-lead mt-2">
-            かっこ内は「事業所数／土曜に開いている数／18時以降まで開いている数」です。
-          </p>
-          <div className="mt-5 space-y-7">
-            {REGIONS.map((r) => (
-              <div key={r.name}>
-                <h3 className="jm-h3">{r.name}</h3>
-                <div className="mt-1 grid gap-x-7 sm:grid-cols-2 lg:grid-cols-3">
-                  {r.slugs.map((s) => {
-                    const p = byslug.get(s);
-                    if (!p) return null;
-                    return (
-                      <div
-                        key={s}
-                        className="flex min-h-[44px] items-center justify-between gap-3 border-b border-[var(--line)] py-1.5"
-                      >
-                        <Link href={`/area/${s}/`} className="jm-link">
-                          {p.pref}
-                        </Link>
-                        <span className="jm-count tabular-nums">
-                          {p.total.toLocaleString()}／土{p.sat.toLocaleString()}／18時{p.late18.toLocaleString()}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
