@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { INDEX } from "@/lib/data";
+import MotionRoot from "@/components/MotionRoot";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://houday-sagashi.com"),
@@ -11,6 +12,29 @@ export const metadata: Metadata = {
   },
   description:
     "全国42,013事業所の放課後等デイサービス・児童発達支援を、平日の終わり時刻・土曜の開所・定員といった公表データで比べられます。出所は障害福祉サービス等情報公表システム（2026年3月末時点）。",
+  // 共有用の画像（公開前チェック 7）。各ページで openGraph を上書きしないこと（上書きすると画像が引き継がれない）
+  openGraph: {
+    siteName: "放デイさがし",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "放デイさがし" }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og.png"] },
+};
+
+// 全ページ共通の構造化データ（公開前チェック 3：TOP・規約などが0個だった）
+const siteLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://houday-sagashi.com/#website",
+      name: "放デイさがし",
+      url: "https://houday-sagashi.com/",
+      inLanguage: "ja",
+      description: "放課後等デイサービス・児童発達支援を、平日の終わり時刻・土曜の開所などの公表データで探せるサイトです。",
+    },
+  ],
 };
 
 const total = INDEX.counts.houday + INDEX.counts.jihatsu;
@@ -19,6 +43,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja">
       <body className="min-h-screen">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteLd) }} />
+        <MotionRoot />
         {/* 広告・アフィリエイトを掲載する場合に備えた包括表記(全サイト共通ルール) */}
         <div className="bg-[var(--bg-2)] border-b border-[var(--line)] px-4 py-1.5 text-center text-[10px] leading-[15px] text-[var(--ink-3)]">
           本サイトはプロモーションを含む場合があります。掲載している事業所情報は公的な公表データに基づく実データです。

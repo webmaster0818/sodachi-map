@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { INDEX, loadPref, cityList } from "@/lib/data";
 import AreaPicker from "@/components/AreaPicker";
@@ -15,6 +16,9 @@ import AreaMap from "@/components/AreaMap";
  *   TOPを「件数つきリンクの索引」として作り、影を使わず罫線だけで区切る。
  *   数値はすべて公表データからの機械集計で、推計も評価も入れない。
  */
+
+// 公開前チェック 1a：TOP にだけ canonical が無かった（2026-11-21 施主了承）
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const total = INDEX.counts.houday + INDEX.counts.jihatsu;
 const sat = INDEX.prefs.reduce((s, p) => s + p.sat, 0);

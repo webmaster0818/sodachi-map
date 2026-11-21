@@ -97,3 +97,45 @@ export function fmtHour(h: number | null) {
   const mm = Math.round((h - hh) * 60);
   return `${hh}:${String(mm).padStart(2, "0")}`;
 }
+
+/** 市区町村の位置（事業所の緯度経度の中央値）。緯度経度が1件も無ければ null */
+function cityCenter(list: Facility[]): [number, number] | null {
+  const la = list.map((f) => parseFloat(f.lat)).filter((x) => Number.isFinite(x)).sort((a, b) => a - b);
+  const ln = list.map((f) => parseFloat(f.lng)).filter((x) => Number.isFinite(x)).sort((a, b) => a - b);
+  if (!la.length || !ln.length) return null;
+  return [la[Math.floor(la.length / 2)], ln[Math.floor(ln.length / 2)]];
+}
+
+/**
+ * 同じ都道府県の中で、地理的に近い市区町村を n 件返す。
+ * 位置は公表データの事業所の緯度経度の中央値で決める（当サイトの推計ではなく、近さの並べ替えにだけ使う）。
+ * 以前は「事業所の多い順の上位12件」を出していたため、小さな市町村には一覧からしかリンクが無かった（2026-11-21）。
+ */
+function nearestRaw(prefSlug: string, city: string, n: number) {
+  const all = cityList(loadPref(prefSlug));
+  const me = all.find((x) => x.city === city);
+  const c0 = me ? cityCenter(me.list) : null;
+  const rest = all.filter((x) => x.city !== city);
+  if (!c0) return rest.slice(0, n);
+  const k = Math.cos((c0[0] * Math.PI) / 180);
+  return rest
+    .map((x) => {
+      const c = cityCenter(x.list);
+      const d = c ? Math.hypot(c[0] - c0[0], (c[1] - c0[1]) * k) : Infinity;
+      return { x, d };
+    })
+    .sort((a, b) => a.d - b.d)
+    .slice(0, n)
+    .map((v) => v.x);
+}
+
+export function nearestCities(prefSlug: string, city: string, n = 12) {
+  const near = nearestRaw(prefSlug, city, n);
+  // 離島など、どの市区町村から見ても上位 n 件に入らない所が孤立しないよう、
+  // 「相手の近隣一覧に自分が入っている」市区町村も足す（リンクを双方向にする）。
+  const have = new Set(near.map((x) => x.city));
+  const back = cityList(loadPref(prefSlug)).filter(
+    (y) => y.city !== city && !have.has(y.city) && nearestRaw(prefSlug, y.city, n).some((z) => z.city === city),
+  );
+  return [...near, ...back];
+}

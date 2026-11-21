@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { INDEX, loadPref, prefBySlug, cityList } from "@/lib/data";
+import { INDEX, loadPref, prefBySlug, cityList, nearestCities } from "@/lib/data";
 import FacilityList from "@/components/FacilityList";
 import SourceNote from "@/components/SourceNote";
 
@@ -45,7 +45,7 @@ export default async function CityPage({ params }: { params: Promise<{ pref: str
   const { p, c } = r;
   const late = c.list.filter((f) => f.end !== null && f.end >= 18);
   const sat = c.list.filter((f) => f.sat);
-  const others = cityList(loadPref(pref)).filter((x) => x.city !== c.city).slice(0, 12);
+  const others = nearestCities(pref, c.city, 12);
 
   const faqs = [
     {
@@ -131,7 +131,7 @@ export default async function CityPage({ params }: { params: Promise<{ pref: str
         <>
           <h2 className="mt-10 text-xl font-bold">{p.pref}の近隣の市区町村</h2>
           <p className="mt-2 text-sm leading-relaxed text-[var(--ink-soft)]">
-            送迎の範囲内であれば、隣の市区町村も候補になります。
+            送迎の範囲内であれば、隣の市区町村も候補になります。事業所の所在地（公表データの緯度経度）をもとに、近い順に並べています。
           </p>
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
             {others.map((x) => (
